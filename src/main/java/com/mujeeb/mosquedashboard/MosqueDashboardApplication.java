@@ -30,7 +30,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner masjidsLoader(MasjidRepository repository) {
+	public CommandLineRunner masjidsLoader(UserRepository repository) {
 
 		return (args) -> {
 
@@ -63,7 +63,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner namazTimesLoader(NamazTimeRepository repository) {
+	public CommandLineRunner namazTimesLoader(ProductRepository repository) {
 
 		return (args) -> {
 
@@ -89,7 +89,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner noticesLoader(NoticeRepository repository) {
+	public CommandLineRunner noticesLoader(UnitRepository repository) {
 
 		return (args) -> {
 
@@ -113,7 +113,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner occasionsLoader(OccasionRepository repository) {
+	public CommandLineRunner occasionsLoader(OrderRepository repository) {
 
 		return (args) -> {
 
@@ -139,7 +139,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner QuranAyatLoader(QuranAyatRepository repository) {
+	public CommandLineRunner QuranAyatLoader(ExchangeRequestRepository repository) {
 
 		return (args) -> {
 
@@ -161,7 +161,7 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner ramzanTimeTableLoader(RamzanTimeRepository repository) {
+	public CommandLineRunner ramzanTimeTableLoader(ListingRepository repository) {
 
 		return (args) -> {
 

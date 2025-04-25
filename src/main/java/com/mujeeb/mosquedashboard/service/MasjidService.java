@@ -23,22 +23,22 @@ public class MasjidService {
     public static final String KEY_MASJID_NAME = "MASJID_NAME";
 
     @Autowired
-    private MasjidRepository masjidRepository;
+    private UserRepository masjidRepository;
 
     @Autowired
-    private NamazTimeRepository namazTimeRepository;
+    private ProductRepository namazTimeRepository;
 
     @Autowired
-    private NoticeRepository noticeRepository;
+    private UnitRepository noticeRepository;
 
     @Autowired
-    private OccasionRepository occasionRepository;
+    private OrderRepository occasionRepository;
 
     @Autowired
-    private QuranAyatRepository quranAyatRepository;
+    private ExchangeRequestRepository quranAyatRepository;
 
     @Autowired
-    private RamzanTimeRepository ramzanTimeRepository;
+    private ListingRepository ramzanTimeRepository;
 
     public User authenticateUser(int masjidId, String password) throws BaseException {
 

@@ -15,6 +15,9 @@ public class Product {
 
     @Column
     private String name;
+    
+    @Column
+    private String description;
 
     @Column
     private Category category;
@@ -31,8 +34,9 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, Category category, Subcategory subcategory, String imageUrl, Unit unit) {
+    public Product(String name, String description, Category category, Subcategory subcategory, String imageUrl, Unit unit) {
         this.name = name;
+        this.description = description;
         this.category = category;
         this.subcategory = subcategory;
         this.imageUrl = imageUrl;
@@ -44,6 +48,7 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", category=" + category +
                 ", subcategory=" + subcategory +
                 ", imageUrl=" + imageUrl +
@@ -65,6 +70,14 @@ public class Product {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Category getCategory() {

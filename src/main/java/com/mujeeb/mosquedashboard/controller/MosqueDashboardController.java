@@ -28,19 +28,19 @@ public class MosqueDashboardController {
     private MasjidService masjidService;
 
     @Autowired
-    private NamazTimeRepository namazTimeRepository;
+    private ProductRepository namazTimeRepository;
 
     @Autowired
-    private NoticeRepository noticeRepository;
+    private UnitRepository noticeRepository;
 
     @Autowired
-    private OccasionRepository occasionRepository;
+    private OrderRepository occasionRepository;
 
     @Autowired
-    private QuranAyatRepository quranAyatRepository;
+    private ExchangeRequestRepository quranAyatRepository;
 
     @Autowired
-    private RamzanTimeRepository ramzanTimeRepository;
+    private ListingRepository ramzanTimeRepository;
 
     @GetMapping(value = "/getDataForMobileApp", produces = "application/json")
     public Map<String,Object> getDataForMobileApp(@RequestParam String id) {
