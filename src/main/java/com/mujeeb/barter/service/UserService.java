@@ -31,9 +31,24 @@ public class UserService {
         }
     }
 
-    public User getUserDetails(int id) {
+    public User getUserDetails(Long id) {
         return userRepository.findById(id);
     }
+    
+	public User getUserById(Long id) /* throws BaseException */ {
+
+   	 User result = null;
+        try {
+            result = userRepository.findById(id);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+//            throw new BaseException(14);
+        }
+
+        return result;
+   }
     
     public User getUserByUserId(String userId) throws BaseException {
 

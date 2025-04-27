@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mujeeb.barter.entity.User;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
-    User findById(int id);
+    User findById(Long id);
     
     List<User> findByUserId(String userId);
     

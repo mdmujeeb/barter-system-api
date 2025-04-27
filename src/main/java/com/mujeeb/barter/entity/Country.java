@@ -15,7 +15,7 @@ public class Country {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column
     private String name;
@@ -23,7 +23,7 @@ public class Country {
     @Column
     private List<State> states;
 
-    private Country() {
+    protected Country() {
     }
 
     public Country(String name, List<State> states) {
@@ -40,11 +40,11 @@ public class Country {
                 '}';
     }
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

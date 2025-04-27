@@ -9,9 +9,9 @@ import com.mujeeb.barter.entity.Order;
 import com.mujeeb.barter.entity.Product;
 import com.mujeeb.barter.entity.User;
 
-public interface OrderRepository extends CrudRepository<Order, Long> {
+public interface OrderRepository extends CrudRepository<Order, Integer> {
 
-	Order findById(int id);
+	Order findById(Long id);
 	
 	List<Order> findByOutgoingProduct(Product outgoingProduct);
 	

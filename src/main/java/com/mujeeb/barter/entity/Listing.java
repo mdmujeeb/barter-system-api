@@ -20,15 +20,27 @@ public class Listing {
     private Product product;
     
     @Column
+    private Category category;
+    
+    @Column
+    private Subcategory subcategory;
+    
+    @Column
+    private String description;
+    
+    @Column
     private double quantity;
 
     public Listing() {
     }
 
-    public Listing(User user, Date listedAt, Product product, double quantity) {
+    public Listing(User user, Date listedAt, Product product, Category category, Subcategory subcategory, String description, double quantity) {
         this.user = user;
         this.listedAt = listedAt;
         this.product = product;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.description = description;
         this.quantity = quantity;
     }
 
@@ -39,6 +51,9 @@ public class Listing {
                 ", user='" + user + '\'' +
                 ", listedAt=" + listedAt +
                 ", product=" + product +
+                ", category=" + category +
+                ", subcategory=" + subcategory +
+                ", resultDescription=" + description +
                 ", quantity=" + quantity +
                 '}';
     }
@@ -73,6 +88,30 @@ public class Listing {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Subcategory getSubcategory() {
+		return subcategory;
+	}
+
+	public void setSubcategory(Subcategory subcategory) {
+		this.subcategory = subcategory;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public double getQuantity() {

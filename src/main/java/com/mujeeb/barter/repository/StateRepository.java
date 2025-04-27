@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mujeeb.barter.entity.State;
 
-public interface StateRepository extends CrudRepository<State, Long> {
+public interface StateRepository extends CrudRepository<State, Integer> {
 
-	State findById(int id);
+	State findById(Long id);
 	
 	List<State> findAllStates();
 

@@ -1,5 +1,10 @@
 package com.mujeeb.barter.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +18,7 @@ import com.mujeeb.barter.entity.Product;
 import com.mujeeb.barter.entity.State;
 import com.mujeeb.barter.entity.Subcategory;
 import com.mujeeb.barter.entity.Unit;
+import com.mujeeb.barter.entity.User;
 import com.mujeeb.barter.repository.CategoryRepository;
 import com.mujeeb.barter.repository.CityRepository;
 import com.mujeeb.barter.repository.CountryRepository;
@@ -23,7 +29,6 @@ import com.mujeeb.barter.repository.ProductRepository;
 import com.mujeeb.barter.repository.StateRepository;
 import com.mujeeb.barter.repository.SubCategoryRepository;
 import com.mujeeb.barter.repository.UnitRepository;
-import com.mujeeb.barter.repository.UserRepository;
 
 @Component
 public class TransactionService {
@@ -73,6 +78,10 @@ public class TransactionService {
     	return true;
     }
     
+    public Unit findUnitById(Long id) {
+    	return unitRepository.findById(id);
+    }
+    
     // Address operations
     
     // Country
@@ -89,6 +98,10 @@ public class TransactionService {
     	return true;
     }
     
+    public Country findCountryById(Long id) {
+    	return countryRepository.findById(id);
+    }
+    
     // State
     public State addState(State state) {
         return stateRepository.save(state);
@@ -101,6 +114,10 @@ public class TransactionService {
     public boolean deleteState(State state) {
     	stateRepository.delete(state);
     	return true;
+    }
+    
+    public State findStateById(Long id) {
+    	return stateRepository.findById(id);
     }
     
     // City
@@ -117,6 +134,10 @@ public class TransactionService {
     	return true;
     }
     
+    public City findCityById(Long id) {
+    	return cityRepository.findById(id);
+    }
+    
     // Category Operations
     public Category addCategory(Category category) {
         return categoryRepository.save(category);
@@ -129,6 +150,10 @@ public class TransactionService {
     public boolean deleteCategory(Category category) {
     	categoryRepository.delete(category);
     	return true;
+    }
+    
+    public Category findCategoryById(Long id) {
+    	return categoryRepository.findById(id);
     }
     
     // SubCategory operations
@@ -145,6 +170,10 @@ public class TransactionService {
     	return true;
     }
     
+    public Subcategory findSubcategoryById(Long id) {
+    	return subCategoryRepository.findById(id);
+    }
+    
     // Product Operations
     public Product addProduct(Product product) {
         return productRepository.save(product);
@@ -157,6 +186,40 @@ public class TransactionService {
     public boolean deleteProduct(Product product) {
     	productRepository.delete(product);
     	return true;
+    }
+    
+    public Product findProductById(Long id) {
+    	return productRepository.findById(id);
+    }
+    
+    public List<Product> findAllProducts() {
+    	List<Product> products = new ArrayList<Product>();
+    	productRepository.findAll().forEach(product -> products.add(product));
+    	return products;
+    }
+    
+    public List<Product> findTopNProductsByDescription(String description, int n) {
+    	
+    	List<Product> products = new ArrayList<Product>();
+    	productRepository.findAll().forEach(product -> {
+    		if(product.getDescription().toLowerCase().contains(description.toLowerCase())) {
+    			products.add(product); 
+    		}
+    	});
+    	
+    	return getTopNProducts(products, n);
+    }
+    
+    public List<Product> getTopNProducts(Iterable<Product> iterable, int n) {
+    	Iterator<Product> iterator = iterable.iterator();
+    	List<Product> products = new ArrayList<Product>();
+    	for(int i=0; i<n; i++) {
+    		if(!iterator.hasNext()) {
+    			break;
+    		}
+    		products.add(iterator.next());
+    	}
+    	return products;
     }
     
     // Listing Operations
@@ -199,5 +262,77 @@ public class TransactionService {
     public boolean deleteOrder(Order order) {
     	orderRepository.delete(order);
     	return true;
+    }
+    
+    // Utility Methods
+    
+    public List<Listing> findAllListingForUser(User user) {
+    	return listingRepository.findByUser(user);
+    }
+    
+    public List<ExchangeRequest> findAllOutgoingExchangeRequestsForUser(User user) {
+    	return exchangeRequestRepository.findByRequestedBy(user);
+    }
+    
+    public List<ExchangeRequest> findAllIncomingExchangeRequestsForUser(User user) {
+    	List<Listing> listings = listingRepository.findByUser(user);
+    	return listings.stream().map(listing -> exchangeRequestRepository.findByIncomingListing(listing)).flatMap(requests -> requests.stream()).collect(Collectors.toList());
+    }
+    
+    public List<Order> findAllBuyOrders(User user) {
+    	return orderRepository.findByBuyer(user);
+    }
+    
+    public List<Order> findAllSellOrders(User user) {
+    	return orderRepository.findBySeller(user);
+    }
+    
+    public List<Listing> findTopNListings(int n) {
+    	return getTopNListings(listingRepository.findAll(), n);
+    }
+    
+    public List<Listing> findTopNListingsByProduct(Product product, int n) {
+    	return getTopNListings(listingRepository.findByProduct(product), n);
+    }
+    
+    public List<Listing> findTopNListingsByCategory(Category category, int n) {
+    	return getTopNListings(listingRepository.findByCategory(category), n);
+    }
+    
+    public List<Listing> findTopNListingsBySubcategory(Subcategory subcategory, int n) {
+    	return getTopNListings(listingRepository.findBySubcategory(subcategory), n);
+    }
+    
+    public List<Listing> findTopNListingsByUser(User user, int n) {
+    	return getTopNListings(findAllListingForUser(user), n);
+    }
+    
+    public List<Listing> findTopNListingsByDescription(String description, int n) {
+//    	ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(
+//                "resultDescription", 
+//                ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase()
+//          );
+//    	return listingRepository.findByDescription(Example.of(new Listing(), matcher)).getContent();
+    	
+    	List<Listing> listings = new ArrayList<Listing>();
+    	listingRepository.findAll().forEach(listing -> {
+    		if(listing.getDescription().toLowerCase().contains(description.toLowerCase())) {
+    			listings.add(listing); 
+    		}
+    	});
+    	
+    	return getTopNListings(listings, n);
+    }
+    
+    public List<Listing> getTopNListings(Iterable<Listing> iterable, int n) {
+    	Iterator<Listing> iterator = iterable.iterator();
+    	List<Listing> listings = new ArrayList<Listing>();
+    	for(int i=0; i<n; i++) {
+    		if(!iterator.hasNext()) {
+    			break;
+    		}
+    		listings.add(iterator.next());
+    	}
+    	return listings;
     }
 }

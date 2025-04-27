@@ -9,9 +9,9 @@ import com.mujeeb.barter.entity.ExchangeRequest;
 import com.mujeeb.barter.entity.Listing;
 import com.mujeeb.barter.entity.User;
 
-public interface ExchangeRequestRepository extends CrudRepository<ExchangeRequest, Long> {
+public interface ExchangeRequestRepository extends CrudRepository<ExchangeRequest, Integer> {
 
-    ExchangeRequest findById(int id);
+    ExchangeRequest findById(Long id);
     
     List<ExchangeRequest> findByOutgoingListing(Listing outgoingListing);
     

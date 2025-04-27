@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mujeeb.barter.entity.Category;
 
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
-	Category findById(int id);
+	Category findById(Long id);
 	
 	List<Category> findAllCategories();
 

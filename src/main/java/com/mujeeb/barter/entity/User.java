@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     
     @Column
     private String userId;
@@ -94,7 +94,7 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    @Override
+	@Override
     public String toString() {
         return "User{" +
                 "id=" + id +
@@ -119,11 +119,11 @@ public class User {
                 '}';
     }
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -179,6 +179,10 @@ public class DateUtil {
 		}
 	}
 	
+	public static String formatDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+	
 	public static String formatFullDate(Date date) {
 		return new SimpleDateFormat("EEEEEEEE, MMMMMMMM dd").format(date);
 	}

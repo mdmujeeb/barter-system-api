@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mujeeb.barter.entity.Country;
 
-public interface CountryRepository extends CrudRepository<Country, Long> {
+public interface CountryRepository extends CrudRepository<Country, Integer> {
 
-	Country findById(int id);
+	Country findById(Long id);
 	
 	List<Country> findAllCountry();
 
