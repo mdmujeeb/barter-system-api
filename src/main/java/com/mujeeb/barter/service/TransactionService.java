@@ -236,6 +236,10 @@ public class TransactionService {
     	return true;
     }
     
+    public Listing findListingById(Long id) {
+    	return listingRepository.findById(id);
+    }
+    
     // ExchangeRequest Operations
     public ExchangeRequest addExchangeRequest(ExchangeRequest exchangeRequest) {
         return exchangeRequestRepository.save(exchangeRequest);
@@ -248,6 +252,10 @@ public class TransactionService {
     public boolean deleteExchangeRequest(ExchangeRequest exchangeRequest) {
     	exchangeRequestRepository.delete(exchangeRequest);
     	return true;
+    }
+    
+    public ExchangeRequest findExchangeRequestById(Long id) {
+    	return exchangeRequestRepository.findById(id);
     }
     
     // Order Operations

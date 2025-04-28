@@ -6,18 +6,18 @@ public class ListingBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
     
-    private Long id;
-    private String userId;
-    private String listedAt;
-    private Long productId;
-    private Long categoryId;
-    private Long subcategoryId;
-    private String description;
-    private Double quantity;
+    protected Long id;
+    protected Long userId;
+    protected String listedAt;
+    protected Long productId;
+    protected Long categoryId;
+    protected Long subcategoryId;
+    protected String description;
+    protected Double quantity;
 	
 	public ListingBean() {};
 	
-	public ListingBean(String userId, String listedAt, Long productId, Long categoryId, Long subcategoryId, String description, Double quantity) {
+	public ListingBean(Long userId, String listedAt, Long productId, Long categoryId, Long subcategoryId, String description, Double quantity) {
 		this.userId = userId;
 		this.listedAt = listedAt;
 		this.productId = productId;
@@ -27,7 +27,7 @@ public class ListingBean implements Serializable {
 		this.quantity = quantity;
 	}
 	
-	public ListingBean(Long id, String userId, String listedAt, Long productId, Long categoryId, Long subcategoryId, String description, Double quantity) {
+	public ListingBean(Long id, Long userId, String listedAt, Long productId, Long categoryId, Long subcategoryId, String description, Double quantity) {
 		this(userId, listedAt, productId, categoryId, subcategoryId, description, quantity);
 		this.id = id;
 	}
@@ -54,11 +54,11 @@ public class ListingBean implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

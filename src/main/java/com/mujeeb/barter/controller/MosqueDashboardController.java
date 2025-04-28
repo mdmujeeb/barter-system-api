@@ -16,13 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mujeeb.barter.beans.BaseException;
+import com.mujeeb.barter.beans.mappers.ExchangeRequestBeanMapper;
+import com.mujeeb.barter.beans.mappers.ListingBeanMapper;
+import com.mujeeb.barter.beans.mappers.OrderBeanMapper;
 import com.mujeeb.barter.beans.mappers.ProductBeanMapper;
 import com.mujeeb.barter.beans.mappers.UserBeanMapper;
 import com.mujeeb.barter.beans.request.BaseRequestBean;
+import com.mujeeb.barter.beans.request.ExchangeRequestRequestBean;
 import com.mujeeb.barter.beans.request.ListingRequestBean;
+import com.mujeeb.barter.beans.request.OrderRequestBean;
 import com.mujeeb.barter.beans.request.ProductRequestBean;
 import com.mujeeb.barter.beans.request.UserRequestBean;
 import com.mujeeb.barter.beans.response.BaseResponseBean;
+import com.mujeeb.barter.beans.response.ExchangeRequestResponseBean;
+import com.mujeeb.barter.beans.response.ListingResponseBean;
+import com.mujeeb.barter.beans.response.OrderResponseBean;
 import com.mujeeb.barter.beans.response.ProductResponseBean;
 import com.mujeeb.barter.beans.response.UserResponseBean;
 import com.mujeeb.barter.entity.Category;
@@ -484,7 +492,23 @@ public class MosqueDashboardController {
     }
     
     @PostMapping(value = "/createListing", consumes = "application/json", produces="application/json")
-    public ProductResponseBean createListing(@RequestBody ProductRequestBean bean) {
+    public ListingResponseBean createListing(@RequestBody ListingRequestBean bean) {
+    	
+    	User user = null;
+    	try {
+    		user = userService.getUserById(bean.getUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Date currentDate = new Date();
+    	
+    	Product product = null;
+    	try {
+    		product = transactionService.findProductById(bean.getProductId());
+    	}catch(Exception ex) {
+    		return new ListingResponseBean(-1, "Product not Found");
+    	}
     	
     	Category category = null;
     	try {
@@ -499,25 +523,314 @@ public class MosqueDashboardController {
     	}catch(Exception ex) {
 			/* Do Nothing */
     	}
-    	
-    	Unit unit = null;
+
+    	Listing listing = new Listing(user, currentDate, product, category, subcategory, bean.getDescription(), bean.getQuantity());
+
     	try {
-    		unit = transactionService.findUnitById(bean.getUnitId());
+    		listing = transactionService.addListing(listing);
     	}catch(Exception ex) {
 			/* Do Nothing */
     	}
 
-    	Product product = new Product(bean.getName(), bean.getDescription(), category, subcategory, bean.getImageUrl(), unit);
-
-    	try {
-    		product = transactionService.addProduct(product);
-    	}catch(Exception ex) {
-			/* Do Nothing */
-    	}
-
-        ProductResponseBean response = ProductBeanMapper.toResponseBean(product);
+        ListingResponseBean response = ListingBeanMapper.toResponseBean(listing);
         response.setResultCode(0);
-        response.setResultDescription("New Product was added Successfully.");
+        response.setResultDescription("New Listing was added Successfully.");
+        return response;
+    }
+    
+    @PostMapping(value = "/updateListing", consumes = "application/json", produces="application/json")
+    public ListingResponseBean updateListing(@RequestBody ListingRequestBean bean) {
+    	
+    	Listing listing = null;
+    	try {
+    		listing = transactionService.findListingById(bean.getId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User user = null;
+    	try {
+    		user = userService.getUserById(bean.getUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Product product = null;
+    	try {
+    		product = transactionService.findProductById(bean.getProductId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Category category = null;
+    	try {
+    		category = transactionService.findCategoryById(bean.getCategoryId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Subcategory subcategory = null;
+    	try {
+    		subcategory = transactionService.findSubcategoryById(bean.getSubcategoryId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	listing.setUser(user);
+    	listing.setProduct(product);
+    	listing.setCategory(category);
+    	listing.setSubcategory(subcategory);
+    	listing.setDescription(bean.getDescription());
+    	listing.setQuantity(bean.getQuantity());
+
+    	try {
+    		listing = transactionService.updateListing(listing);
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+        ListingResponseBean response = ListingBeanMapper.toResponseBean(listing);
+        response.setResultCode(0);
+        response.setResultDescription("New Listing was updated Successfully.");
+        return response;
+    }
+    
+    @PostMapping(value = "/deleteListing", consumes = "application/json", produces="application/json")
+    public BaseResponseBean deleteListing(@RequestBody ListingRequestBean bean) {
+    	
+    	Listing listing = null;
+    	try {
+    		listing = transactionService.findListingById(bean.getId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	try {
+    		boolean result = transactionService.deleteListing(listing);
+    		
+    		return new BaseResponseBean(result ? 0 : -1, result ? "Listing was Deleted Successfully." : "An error occured while trying to perform requested operation.");
+    		
+    		
+    	}catch(Exception ex) {
+
+    		return new BaseResponseBean(-1, "An error occured while trying to perform requested operation.");
+    	}
+    }
+    
+    @PostMapping(value = "/createExchangeRequest", consumes = "application/json", produces="application/json")
+    public ExchangeRequestResponseBean createExchangeRequest(@RequestBody ExchangeRequestRequestBean bean) {
+    	
+    	Listing outgoingListing = null;
+    	try {
+    		outgoingListing = transactionService.findListingById(bean.getOutgoingListingId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Listing incomingListing = null;
+    	try {
+    		incomingListing = transactionService.findListingById(bean.getIncomingListingId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User requestByUser = null;
+    	try {
+    		requestByUser = userService.getUserById(bean.getRequestedByUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	ExchangeRequest request = new ExchangeRequest(outgoingListing, bean.getOutgoingQuantity()
+    										, incomingListing, bean.getIncomingQuantity()
+    										, requestByUser, new Date()
+    										, null, null);
+
+    	try {
+    		request = transactionService.addExchangeRequest(request);
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	ExchangeRequestResponseBean response = ExchangeRequestBeanMapper.toResponseBean(request);
+        response.setResultCode(0);
+        response.setResultDescription("New Exchange Request was created Successfully.");
+        return response;
+    }
+    
+    @PostMapping(value = "/updateExchangeRequest", consumes = "application/json", produces="application/json")
+    public ExchangeRequestResponseBean updateExchangeRequest(@RequestBody ExchangeRequestRequestBean bean) {
+    	
+    	ExchangeRequest request = null;
+    	try {
+    		request = transactionService.findExchangeRequestById(bean.getId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Listing outgoingListing = null;
+    	try {
+    		outgoingListing = transactionService.findListingById(bean.getOutgoingListingId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Listing incomingListing = null;
+    	try {
+    		incomingListing = transactionService.findListingById(bean.getIncomingListingId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User requestByUser = null;
+    	try {
+    		requestByUser = userService.getUserById(bean.getRequestedByUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Date requestedAt = null; 
+    	try {
+    		DateUtil.parseDate(bean.getRequestedAt());
+    	} catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User acceptedByUser = null;
+    	if(bean.getAcceptedByUserId() != null) {
+	    	try {
+	    		acceptedByUser = userService.getUserById(bean.getAcceptedByUserId());
+	    	}catch(Exception ex) {
+				/* Do Nothing */
+	    	}
+    	}
+    	
+    	Date acceptedAt = null;
+    	if(bean.getAcceptedAt() != null) {
+    		try {
+    			acceptedAt = DateUtil.parseDate(bean.getAcceptedAt());
+    		}catch(Exception ex) {
+				/* Do Nothing */
+    		}
+    	}
+
+    	request.setOutgoingListing(outgoingListing);
+    	request.setOutgoingQuantity(bean.getOutgoingQuantity());
+    	request.setIncomingListing(incomingListing);
+    	request.setIncomingQuantity(bean.getIncomingQuantity());
+    	request.setRequestedBy(requestByUser);
+    	request.setRequestedAt(requestedAt);
+    	request.setAcceptedBy(acceptedByUser);
+    	request.setAcceptedAt(acceptedAt);
+    	
+
+    	try {
+    		request = transactionService.updateExchangeRequest(request);
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	ExchangeRequestResponseBean response = ExchangeRequestBeanMapper.toResponseBean(request);
+        response.setResultCode(0);
+        response.setResultDescription("New Exchange Request was updated Successfully.");
+        return response;
+    }
+    
+    @PostMapping(value = "/deleteListing", consumes = "application/json", produces="application/json")
+    public BaseResponseBean deleteExchangeRequest(@RequestBody ExchangeRequestRequestBean bean) {
+    	
+    	ExchangeRequest request = null;
+    	try {
+    		request = transactionService.findExchangeRequestById(bean.getId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	try {
+    		boolean result = transactionService.deleteExchangeRequest(request);
+    		
+    		return new BaseResponseBean(result ? 0 : -1, result ? "Exchange Request was Deleted Successfully." : "An error occured while trying to perform requested operation.");
+    		
+    		
+    	}catch(Exception ex) {
+
+    		return new BaseResponseBean(-1, "An error occured while trying to perform requested operation.");
+    	}
+    }
+    
+    @PostMapping(value = "/createOrder", consumes = "application/json", produces="application/json")
+    public OrderResponseBean createOrder(@RequestBody OrderRequestBean bean) {
+    	
+    	ExchangeRequest request = null;
+    	try {
+    		request = transactionService.findExchangeRequestById(bean.getExchangeRequestId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Product outgoingProduct = null;
+    	try {
+    		outgoingProduct = transactionService.findProductById(bean.getOutgoingProductId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	Product incomingProduct = null;
+    	try {
+    		incomingProduct = transactionService.findProductById(bean.getIncomingProductId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User seller = null;
+    	try {
+    		seller = userService.getUserById(bean.getSellerUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+    	
+    	User buyer = null;
+    	try {
+    		buyer = userService.getUserById(bean.getBuyerUserId());
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	Order order = new Order(outgoingProduct, bean.getOutgoingQuantity(), seller, incomingProduct, bean.getIncomingQuantity(), buyer, new Date());
+
+    	try {
+    		// Create the Order
+    		order = transactionService.addOrder(order);
+    		
+    		// Update the remaining Quantities or Delete the Listing
+    		Listing outgoingListing = request.getOutgoingListing();
+    		Listing incomingListing = request.getIncomingListing();
+    		
+    		if(outgoingListing.getQuantity() > order.getOutgoingQuantity()) {
+    			outgoingListing.setQuantity(outgoingListing.getQuantity() - order.getOutgoingQuantity());
+    			transactionService.updateListing(outgoingListing);
+    			
+    		} else {
+    			
+    			transactionService.deleteListing(outgoingListing);
+    		}
+    		
+    		if(incomingListing.getQuantity() > order.getIncomingQuantity()) {
+    			incomingListing.setQuantity(incomingListing.getQuantity() - order.getIncomingQuantity());
+    			transactionService.updateListing(incomingListing);
+    			
+    		} else {
+    			
+    			transactionService.deleteListing(incomingListing);
+    		}
+    		
+    	}catch(Exception ex) {
+			/* Do Nothing */
+    	}
+
+    	OrderResponseBean response = OrderBeanMapper.toResponseBean(order, request);
+        response.setResultCode(0);
+        response.setResultDescription("Order was created Successfully.");
         return response;
     }
 }
