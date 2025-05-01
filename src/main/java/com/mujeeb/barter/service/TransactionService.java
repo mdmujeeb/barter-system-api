@@ -13,7 +13,7 @@ import com.mujeeb.barter.entity.City;
 import com.mujeeb.barter.entity.Country;
 import com.mujeeb.barter.entity.ExchangeRequest;
 import com.mujeeb.barter.entity.Listing;
-import com.mujeeb.barter.entity.Order;
+import com.mujeeb.barter.entity.Orders;
 import com.mujeeb.barter.entity.Product;
 import com.mujeeb.barter.entity.State;
 import com.mujeeb.barter.entity.Subcategory;
@@ -258,16 +258,16 @@ public class TransactionService {
     	return exchangeRequestRepository.findById(id);
     }
     
-    // Order Operations
-    public Order addOrder(Order order) {
+    // Orders Operations
+    public Orders addOrder(Orders order) {
         return orderRepository.save(order);
     }
     
-    public Order updateOrder(Order order) {
+    public Orders updateOrder(Orders order) {
     	return orderRepository.save(order);
     }
     
-    public boolean deleteOrder(Order order) {
+    public boolean deleteOrder(Orders order) {
     	orderRepository.delete(order);
     	return true;
     }
@@ -275,24 +275,24 @@ public class TransactionService {
     // Utility Methods
     
     public List<Listing> findAllListingForUser(User user) {
-    	return listingRepository.findByUser(user);
+    	return listingRepository.findByUserId(user.getId());
     }
     
     public List<ExchangeRequest> findAllOutgoingExchangeRequestsForUser(User user) {
-    	return exchangeRequestRepository.findByRequestedBy(user);
+    	return exchangeRequestRepository.findByRequestedByUserId(user.getId());
     }
     
     public List<ExchangeRequest> findAllIncomingExchangeRequestsForUser(User user) {
-    	List<Listing> listings = listingRepository.findByUser(user);
-    	return listings.stream().map(listing -> exchangeRequestRepository.findByIncomingListing(listing)).flatMap(requests -> requests.stream()).collect(Collectors.toList());
+    	List<Listing> listings = listingRepository.findByUserId(user.getId());
+    	return listings.stream().map(listing -> exchangeRequestRepository.findByIncomingListingId(listing.getId())).flatMap(requests -> requests.stream()).collect(Collectors.toList());
     }
     
-    public List<Order> findAllBuyOrders(User user) {
-    	return orderRepository.findByBuyer(user);
+    public List<Orders> findAllBuyOrders(User user) {
+    	return orderRepository.findByBuyerId(user.getId());
     }
     
-    public List<Order> findAllSellOrders(User user) {
-    	return orderRepository.findBySeller(user);
+    public List<Orders> findAllSellOrders(User user) {
+    	return orderRepository.findBySellerId(user.getId());
     }
     
     public List<Listing> findTopNListings(int n) {
@@ -300,15 +300,15 @@ public class TransactionService {
     }
     
     public List<Listing> findTopNListingsByProduct(Product product, int n) {
-    	return getTopNListings(listingRepository.findByProduct(product), n);
+    	return getTopNListings(listingRepository.findByProductId(product.getId()), n);
     }
     
     public List<Listing> findTopNListingsByCategory(Category category, int n) {
-    	return getTopNListings(listingRepository.findByCategory(category), n);
+    	return getTopNListings(listingRepository.findByCategoryId(category.getId()), n);
     }
     
     public List<Listing> findTopNListingsBySubcategory(Subcategory subcategory, int n) {
-    	return getTopNListings(listingRepository.findBySubcategory(subcategory), n);
+    	return getTopNListings(listingRepository.findBySubcategoryId(subcategory.getId()), n);
     }
     
     public List<Listing> findTopNListingsByUser(User user, int n) {

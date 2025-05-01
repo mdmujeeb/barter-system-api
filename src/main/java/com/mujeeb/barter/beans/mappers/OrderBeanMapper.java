@@ -4,22 +4,22 @@ package com.mujeeb.barter.beans.mappers;
 
 import com.mujeeb.barter.beans.response.OrderResponseBean;
 import com.mujeeb.barter.entity.ExchangeRequest;
-import com.mujeeb.barter.entity.Order;
+import com.mujeeb.barter.entity.Orders;
 import com.mujeeb.barter.util.DateUtil;
 
 public class OrderBeanMapper {
 
-	public static OrderResponseBean toResponseBean(Order bean, ExchangeRequest request) {
+	public static OrderResponseBean toResponseBean(Orders bean, ExchangeRequest request) {
 		
 		return new OrderResponseBean(bean.getId()
-				, request.getAcceptedBy().getId()
+				, request.getAcceptedByUserId()
 				, request.getId()
-				, bean.getOutgoingProduct().getId()
+				, bean.getOutgoingProductId()
 				, bean.getOutgoingQuantity()
-				, bean.getSeller().getId()
-				, bean.getIncomingProduct().getId()
+				, bean.getSellerId()
+				, bean.getIncomingProductId()
 				, bean.getIncomingQuantity()
-				, bean.getBuyer().getId()
+				, bean.getBuyerId()
 				, DateUtil.formatDate(bean.getTransactionDate()));
 	}
 }

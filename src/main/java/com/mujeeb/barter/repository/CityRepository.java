@@ -10,7 +10,7 @@ public interface CityRepository extends CrudRepository<City, Integer> {
 
 	City findById(Long id);
 	
-	List<City> findAllCities();
+	List<City> findAll();
 
     City findByName(String name);
 }

@@ -10,7 +10,7 @@ public interface SubCategoryRepository extends CrudRepository<Subcategory, Integ
 
 	Subcategory findById(Long id);
 	
-	List<Subcategory> findAllSubCategories();
+	List<Subcategory> findAll();
 
     Subcategory findByName(String name);
 }

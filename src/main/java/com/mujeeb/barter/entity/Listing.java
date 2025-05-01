@@ -1,7 +1,12 @@
 package com.mujeeb.barter.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Listing {
@@ -11,19 +16,19 @@ public class Listing {
     private Long id;
 
     @Column
-    private User user;
+    private Long userId;
 
     @Column
     private Date listedAt;
 
     @Column
-    private Product product;
+    private Long productId;
     
     @Column
-    private Category category;
+    private Long categoryId;
     
     @Column
-    private Subcategory subcategory;
+    private Long subcategoryId;
     
     @Column
     private String description;
@@ -34,12 +39,12 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(User user, Date listedAt, Product product, Category category, Subcategory subcategory, String description, double quantity) {
-        this.user = user;
+    public Listing(Long userId, Date listedAt, Long productId, Long categoryId, Long subcategoryId, String description, double quantity) {
+        this.userId = userId;
         this.listedAt = listedAt;
-        this.product = product;
-        this.category = category;
-        this.subcategory = subcategory;
+        this.productId = productId;
+        this.categoryId = categoryId;
+        this.subcategoryId = subcategoryId;
         this.description = description;
         this.quantity = quantity;
     }
@@ -48,11 +53,11 @@ public class Listing {
     public String toString() {
         return "Occasion{" +
                 "id=" + id +
-                ", user='" + user + '\'' +
+                ", userId='" + userId + '\'' +
                 ", listedAt=" + listedAt +
-                ", product=" + product +
-                ", category=" + category +
-                ", subcategory=" + subcategory +
+                ", productId=" + productId +
+                ", categoryId=" + categoryId +
+                ", subcategoryId=" + subcategoryId +
                 ", resultDescription=" + description +
                 ", quantity=" + quantity +
                 '}';
@@ -66,12 +71,12 @@ public class Listing {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Date getListedAt() {
@@ -82,28 +87,28 @@ public class Listing {
 		this.listedAt = listedAt;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Long getProductId() {
+		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public Subcategory getSubcategory() {
-		return subcategory;
+	public Long getSubcategoryId() {
+		return subcategoryId;
 	}
 
-	public void setSubcategory(Subcategory subcategory) {
-		this.subcategory = subcategory;
+	public void setSubcategory(Long subcategoryId) {
+		this.subcategoryId = subcategoryId;
 	}
 
 	public String getDescription() {

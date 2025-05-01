@@ -38,7 +38,7 @@ import com.mujeeb.barter.entity.City;
 import com.mujeeb.barter.entity.Country;
 import com.mujeeb.barter.entity.ExchangeRequest;
 import com.mujeeb.barter.entity.Listing;
-import com.mujeeb.barter.entity.Order;
+import com.mujeeb.barter.entity.Orders;
 import com.mujeeb.barter.entity.Product;
 import com.mujeeb.barter.entity.State;
 import com.mujeeb.barter.entity.Subcategory;
@@ -49,7 +49,7 @@ import com.mujeeb.barter.service.UserService;
 import com.mujeeb.barter.util.DateUtil;
 
 @RestController
-public class MosqueDashboardController {
+public class BarterController {
 
     @Autowired
     private UserService userService;
@@ -83,8 +83,8 @@ public class MosqueDashboardController {
     	List<Listing> listings = transactionService.findAllListingForUser(user);
     	List<ExchangeRequest> outgoingRequests = transactionService.findAllOutgoingExchangeRequestsForUser(user);
     	List<ExchangeRequest> incomingRequests = transactionService.findAllIncomingExchangeRequestsForUser(user);
-    	List<Order> buyOrders = transactionService.findAllBuyOrders(user);
-    	List<Order> sellOrders = transactionService.findAllSellOrders(user);
+    	List<Orders> buyOrders = transactionService.findAllBuyOrders(user);
+    	List<Orders> sellOrders = transactionService.findAllSellOrders(user);
     	List<Listing> publicListings = transactionService.findTopNListings(10);
 
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -169,7 +169,7 @@ public class MosqueDashboardController {
     }
 
     @GetMapping(value = "/getAllBuyOrders", produces = "application/json")
-    public List<Order> getAllBuyOrders(@RequestParam BaseRequestBean bean) {
+    public List<Orders> getAllBuyOrders(@RequestParam BaseRequestBean bean) {
 
     	User user = null;
     	try {
@@ -184,11 +184,11 @@ public class MosqueDashboardController {
             e.printStackTrace();
         }
         
-        return new ArrayList<Order>();
+        return new ArrayList<Orders>();
     }
 
     @GetMapping(value = "/getAllSellOrders", produces = "application/json")
-    public List<Order> getAllSellOrders(@RequestParam BaseRequestBean bean) {
+    public List<Orders> getAllSellOrders(@RequestParam BaseRequestBean bean) {
 
     	User user = null;
     	try {
@@ -203,7 +203,7 @@ public class MosqueDashboardController {
             e.printStackTrace();
         }
         
-        return new ArrayList<Order>();
+        return new ArrayList<Orders>();
     }
 
     @GetMapping(value = "/getPublicListings", produces = "application/json")
@@ -286,7 +286,7 @@ public class MosqueDashboardController {
     	Date currentDate = new Date();
     	
     	User user = new User(bean.getUserId(), bean.getFirstName(), bean.getLastName(), bean.getMobile(), bean.getEmail()
-    			, dateOfBirth, bean.getAddress1(), bean.getAddress2(), city, state, country, bean.getPinCode()
+    			, dateOfBirth, bean.getAddress1(), bean.getAddress2(), city.getId(), state.getId(), country.getId(), bean.getPinCode()
     			, bean.getPassword(), currentDate, latitude, longitude, currentDate, currentDate);
 
         user = userService.saveUser(user);
@@ -353,9 +353,9 @@ public class MosqueDashboardController {
     	user.setMobile(bean.getMobile());
     	user.setAddress1(bean.getAddress1());
     	user.setAddress2(bean.getAddress2());
-    	user.setCity(city);
-    	user.setState(state);
-    	user.setCountry(country);
+    	user.setCityId(city.getId());
+    	user.setStateId(state.getId());
+    	user.setCountryId(country.getId());
     	user.setPinCode(bean.getPinCode());
     	user.setLatitude(latitude);
     	user.setLongitude(longitude);
@@ -409,7 +409,7 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
 
-    	Product product = new Product(bean.getName(), bean.getDescription(), category, subcategory, bean.getImageUrl(), unit);
+    	Product product = new Product(bean.getName(), bean.getDescription(), category.getId(), subcategory.getId(), bean.getImageUrl(), unit.getId());
 
     	try {
     		product = transactionService.addProduct(product);
@@ -457,12 +457,12 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
     	
-    	product.setCategory(category);
-    	product.setSubcategory(subcategory);
+    	product.setCategoryId(category.getId());
+    	product.setSubcategoryId(subcategory.getId());
     	product.setDescription(bean.getDescription());
     	product.setImageUrl(bean.getImageUrl());
     	product.setName(bean.getName());
-    	product.setUnit(unit);
+    	product.setUnitId(unit.getId());
 
     	try {
     		product = transactionService.updateProduct(product);
@@ -524,7 +524,7 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
 
-    	Listing listing = new Listing(user, currentDate, product, category, subcategory, bean.getDescription(), bean.getQuantity());
+    	Listing listing = new Listing(user.getId(), currentDate, product.getId(), category.getId(), subcategory.getId(), bean.getDescription(), bean.getQuantity());
 
     	try {
     		listing = transactionService.addListing(listing);
@@ -576,10 +576,10 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
 
-    	listing.setUser(user);
-    	listing.setProduct(product);
-    	listing.setCategory(category);
-    	listing.setSubcategory(subcategory);
+    	listing.setUserId(user.getId());
+    	listing.setProductId(product.getId());
+    	listing.setCategoryId(category.getId());
+    	listing.setSubcategory(subcategory.getId());
     	listing.setDescription(bean.getDescription());
     	listing.setQuantity(bean.getQuantity());
 
@@ -641,9 +641,9 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
 
-    	ExchangeRequest request = new ExchangeRequest(outgoingListing, bean.getOutgoingQuantity()
-    										, incomingListing, bean.getIncomingQuantity()
-    										, requestByUser, new Date()
+    	ExchangeRequest request = new ExchangeRequest(outgoingListing.getId(), bean.getOutgoingQuantity()
+    										, incomingListing.getId(), bean.getIncomingQuantity()
+    										, requestByUser.getId(), new Date()
     										, null, null);
 
     	try {
@@ -714,13 +714,13 @@ public class MosqueDashboardController {
     		}
     	}
 
-    	request.setOutgoingListing(outgoingListing);
+    	request.setOutgoingListingId(outgoingListing.getId());
     	request.setOutgoingQuantity(bean.getOutgoingQuantity());
-    	request.setIncomingListing(incomingListing);
+    	request.setIncomingListingId(incomingListing.getId());
     	request.setIncomingQuantity(bean.getIncomingQuantity());
-    	request.setRequestedBy(requestByUser);
+    	request.setRequestedByUserId(requestByUser.getId());
     	request.setRequestedAt(requestedAt);
-    	request.setAcceptedBy(acceptedByUser);
+    	request.setAcceptedByUserId(acceptedByUser.getId());
     	request.setAcceptedAt(acceptedAt);
     	
 
@@ -736,7 +736,7 @@ public class MosqueDashboardController {
         return response;
     }
     
-    @PostMapping(value = "/deleteListing", consumes = "application/json", produces="application/json")
+    @PostMapping(value = "/deleteExchangeRequest", consumes = "application/json", produces="application/json")
     public BaseResponseBean deleteExchangeRequest(@RequestBody ExchangeRequestRequestBean bean) {
     	
     	ExchangeRequest request = null;
@@ -796,15 +796,16 @@ public class MosqueDashboardController {
 			/* Do Nothing */
     	}
 
-    	Order order = new Order(outgoingProduct, bean.getOutgoingQuantity(), seller, incomingProduct, bean.getIncomingQuantity(), buyer, new Date());
+    	Orders order = new Orders(outgoingProduct.getId(), bean.getOutgoingQuantity(), seller.getId(), incomingProduct.getId()
+    									, bean.getIncomingQuantity(), buyer.getId(), new Date());
 
     	try {
-    		// Create the Order
+    		// Create the Orders
     		order = transactionService.addOrder(order);
     		
     		// Update the remaining Quantities or Delete the Listing
-    		Listing outgoingListing = request.getOutgoingListing();
-    		Listing incomingListing = request.getIncomingListing();
+    		Listing outgoingListing = transactionService.findListingById(request.getOutgoingListingId());
+    		Listing incomingListing = transactionService.findListingById(request.getIncomingListingId());
     		
     		if(outgoingListing.getQuantity() > order.getOutgoingQuantity()) {
     			outgoingListing.setQuantity(outgoingListing.getQuantity() - order.getOutgoingQuantity());
@@ -830,7 +831,7 @@ public class MosqueDashboardController {
 
     	OrderResponseBean response = OrderBeanMapper.toResponseBean(order, request);
         response.setResultCode(0);
-        response.setResultDescription("Order was created Successfully.");
+        response.setResultDescription("Orders was created Successfully.");
         return response;
     }
 }

@@ -10,7 +10,7 @@ public interface CountryRepository extends CrudRepository<Country, Integer> {
 
 	Country findById(Long id);
 	
-	List<Country> findAllCountry();
+	List<Country> findAll();
 
     Country findByName(String name);
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Category {
@@ -18,15 +20,22 @@ public class Category {
     @Column
     private String name;
 
+    @OneToMany(targetEntity = Subcategory.class)
+    @JoinColumn(name="id")
+    private List<Long> subcategoryIds;
+    
     @Column
-    private List<Subcategory> subcategories;
+    private Long productId;
+    
+    @Column
+    private Long listingId;
 
     public Category() {
     }
 
-    public Category(String name, List<Subcategory> subcategories) {
+    public Category(String name, List<Long> subcategoryIds) {
         this.name = name;
-        this.subcategories = subcategories;
+        this.subcategoryIds = subcategoryIds;
     }
 
     @Override
@@ -34,7 +43,7 @@ public class Category {
         return "Notice{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", subcategories=" + subcategories +
+                ", subcategoryIds=" + subcategoryIds +
                 '}';
     }
 
@@ -54,11 +63,11 @@ public class Category {
 		this.name = name;
 	}
 
-	public List<Subcategory> getSubcategories() {
-		return subcategories;
+	public List<Long> getSubcategoryIds() {
+		return subcategoryIds;
 	}
 
-	public void setSubcategories(List<Subcategory> subcategories) {
-		this.subcategories = subcategories;
+	public void setSubcategoryIds(List<Long> subcategoryIds) {
+		this.subcategoryIds = subcategoryIds;
 	}
 }

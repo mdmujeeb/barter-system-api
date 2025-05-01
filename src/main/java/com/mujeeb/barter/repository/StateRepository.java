@@ -10,7 +10,7 @@ public interface StateRepository extends CrudRepository<State, Integer> {
 
 	State findById(Long id);
 	
-	List<State> findAllStates();
+	List<State> findAll();
 
     State findByName(String name);
 }

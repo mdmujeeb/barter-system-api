@@ -14,15 +14,15 @@ public class ExchangeRequestBeanMapper {
 		}
 		
 		Long acceptedBy = null;
-		if(bean.getAcceptedBy() != null) {
-			acceptedBy = bean.getAcceptedBy().getId();
+		if(bean.getAcceptedByUserId() != null) {
+			acceptedBy = bean.getAcceptedByUserId();
 		}
 		
-		return new ExchangeRequestResponseBean(bean.getOutgoingListing().getId()
+		return new ExchangeRequestResponseBean(bean.getOutgoingListingId()
 				, bean.getOutgoingQuantity()
-				, bean.getIncomingListing().getId()
+				, bean.getIncomingListingId()
 				, bean.getIncomingQuantity()
-				, bean.getRequestedBy().getId()
+				, bean.getRequestedByUserId()
 				, DateUtil.formatDate(bean.getRequestedAt())
 				, acceptedBy
 				, acceptedAt);

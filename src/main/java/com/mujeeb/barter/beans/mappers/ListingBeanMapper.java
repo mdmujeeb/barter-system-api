@@ -8,11 +8,11 @@ public class ListingBeanMapper {
 
 	public static ListingResponseBean toResponseBean(Listing bean) {
 		return new ListingResponseBean(bean.getId()
-				, bean.getUser().getId()
+				, bean.getUserId()
 				, DateUtil.formatDate(bean.getListedAt())
-				, bean.getProduct().getId()
-				, bean.getCategory().getId()
-				, bean.getSubcategory().getId()
+				, bean.getProductId()
+				, bean.getCategoryId()
+				, bean.getSubcategoryId()
 				, bean.getDescription()
 				, bean.getQuantity());
 	}

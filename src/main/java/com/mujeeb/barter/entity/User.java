@@ -16,6 +16,15 @@ public class User {
     private Long id;
     
     @Column
+    private Long listingId;
+    
+    @Column
+    private Long exchangeRequestId;
+    
+    @Column
+    private Long orderId;
+    
+    @Column
     private String userId;
 
     @Column
@@ -40,13 +49,13 @@ public class User {
     private String address2;
     
     @Column
-    private City city;
+    private Long cityId;
     
     @Column
-    private State state;
+    private Long stateId;
     
     @Column
-    private Country country;
+    private Long countryId;
     
     @Column
     private String pinCode;
@@ -71,8 +80,8 @@ public class User {
 
     public User() {}
 
-    public User(String userId, String firstName, String lastName,String mobile, String email, Date dateOfBirth, String address1, String address2, City city, 
-    				State state, Country country, String pinCode, String password, Date memberSince, double latitude, double longitude, 
+    public User(String userId, String firstName, String lastName,String mobile, String email, Date dateOfBirth, String address1, String address2, Long cityId, 
+    				Long stateId, Long countryId, String pinCode, String password, Date memberSince, double latitude, double longitude, 
     				Date createdAt, Date updatedAt) {
     	this.userId = userId;
         this.firstName = firstName;
@@ -82,9 +91,9 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.address1 = address1;
         this.address2 = address2;
-        this.city = city;
-        this.state = state;
-        this.country = country;
+        this.cityId = cityId;
+        this.stateId = stateId;
+        this.countryId = countryId;
         this.pinCode = pinCode;
         this.password = password;
         this.memberSince = memberSince;
@@ -106,9 +115,9 @@ public class User {
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", country='" + country + '\'' +
+                ", cityId='" + cityId + '\'' +
+                ", stateId='" + stateId + '\'' +
+                ", countryId='" + countryId + '\'' +
                 ", pinCode='" + pinCode + '\'' +
                 ", password='" + password + '\'' +
                 ", memberSince='" + memberSince + '\'' +
@@ -191,28 +200,52 @@ public class User {
 		this.address2 = address2;
 	}
 
-	public City getCity() {
-		return city;
+	public Long getListingId() {
+		return listingId;
 	}
 
-	public void setCity(City city) {
-		this.city = city;
+	public void setListingId(Long listingId) {
+		this.listingId = listingId;
 	}
 
-	public State getState() {
-		return state;
+	public Long getExchangeRequestId() {
+		return exchangeRequestId;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setExchangeRequestId(Long exchangeRequestId) {
+		this.exchangeRequestId = exchangeRequestId;
 	}
 
-	public Country getCountry() {
-		return country;
+	public Long getOrderId() {
+		return orderId;
 	}
 
-	public void setCountry(Country country) {
-		this.country = country;
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public Long getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(Long countryId) {
+		this.countryId = countryId;
 	}
 
 	public String getPinCode() {

@@ -1,14 +1,14 @@
 package com.mujeeb.barter.entity;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class State {
@@ -19,16 +19,20 @@ public class State {
 
     @Column
     private String name;
-
+    
     @Column
-    private List<City> cities;
+    private Long countryId;
+
+    @OneToMany(targetEntity = City.class)
+    @JoinColumn(name="id")
+    private List<Long> cityIds;
 
     protected State() {
     }
 
-    public State(String name, List<City> cities) {
+    public State(String name, List<Long> cityIds) {
         this.name = name;
-        this.cities = cities;
+        this.cityIds = cityIds;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class State {
         return "NamazTime{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", cities=" + cities +
+                ", cityIds=" + cityIds +
                 '}';
     }
 
@@ -56,24 +60,19 @@ public class State {
 		this.name = name;
 	}
 
-	public List<City> getCities() {
-		return cities;
+	public Long getCountryId() {
+		return countryId;
 	}
 
-	public void setCities(List<City> cities) {
-		this.cities = cities;
+	public void setCountryId(Long countryId) {
+		this.countryId = countryId;
 	}
-	
-	public City findCityByName(String city) {
-		
-		Optional<City> ctt = cities.stream().filter(ct -> ct.getName().equals(city)).findFirst();
-		return ctt.isPresent() ? ctt.get() : null;
+
+	public List<Long> getCityIds() {
+		return cityIds;
 	}
-	
-	public void addCity(City city) {
-		if(cities == null) {
-			cities = new ArrayList<City>();
-		}
-		cities.add(city);
+
+	public void setCityIds(List<Long> cityIds) {
+		this.cityIds = cityIds;
 	}
 }

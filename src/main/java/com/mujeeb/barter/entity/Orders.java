@@ -9,56 +9,56 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @Column
-    private Product outgoingProduct;
+    private Long outgoingProductId;
     
     @Column
     private double outgoingQuantity;
     
     @Column
-    private User seller;
+    private Long sellerId;
 
     @Column
-    private Product incomingProduct;
+    private Long incomingProductId;
     
     @Column
     private double incomingQuantity;
     
     @Column
-    private User buyer;
+    private Long buyerId;
     
     @Column
     private Date transactionDate;
 
-    public Order() {
+    public Orders() {
     }
 
-    public Order(Product outgoingProduct, double outgoingQuantity, User seller, Product incomingProduct, double incomingQuantity, User buyer, Date transactionDate) {
-        this.outgoingProduct = outgoingProduct;
+    public Orders(Long outgoingProductId, double outgoingQuantity, Long sellerId, Long incomingProductId, double incomingQuantity, Long buyerId, Date transactionDate) {
+        this.outgoingProductId = outgoingProductId;
         this.outgoingQuantity = outgoingQuantity;
-        this.seller = seller;
-        this.incomingProduct = incomingProduct;
+        this.sellerId = sellerId;
+        this.incomingProductId = incomingProductId;
         this.incomingQuantity = incomingQuantity;
-        this.buyer = buyer;
+        this.buyerId = buyerId;
         this.transactionDate = transactionDate;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Orders{" +
                 "id=" + id +
-                ", outgoingProduct='" + outgoingProduct + '\'' +
+                ", outgoingProductId='" + outgoingProductId + '\'' +
                 ", outgoingQuantity='" + outgoingQuantity + '\'' +
-                ", seller='" + seller + '\'' +
-                ", incomingProduct='" + incomingProduct + '\'' +
+                ", sellerId='" + sellerId + '\'' +
+                ", incomingProductId='" + incomingProductId + '\'' +
                 ", incomingQuantity='" + incomingQuantity + '\'' +
-                ", buyer='" + buyer + '\'' +
+                ", buyerId='" + buyerId + '\'' +
                 ", transactionDate='" + transactionDate + '\'' +
                 '}';
     }
@@ -71,12 +71,12 @@ public class Order {
 		this.id = id;
 	}
 
-	public Product getOutgoingProduct() {
-		return outgoingProduct;
+	public Long getOutgoingProductId() {
+		return outgoingProductId;
 	}
 
-	public void setOutgoingProduct(Product outgoingProduct) {
-		this.outgoingProduct = outgoingProduct;
+	public void setOutgoingProductId(Long outgoingProductId) {
+		this.outgoingProductId = outgoingProductId;
 	}
 
 	public double getOutgoingQuantity() {
@@ -87,20 +87,20 @@ public class Order {
 		this.outgoingQuantity = outgoingQuantity;
 	}
 
-	public User getSeller() {
-		return seller;
+	public Long getSellerId() {
+		return sellerId;
 	}
 
-	public void setSeller(User seller) {
-		this.seller = seller;
+	public void setSellerId(Long sellerId) {
+		this.sellerId = sellerId;
 	}
 
-	public Product getIncomingProduct() {
-		return incomingProduct;
+	public Long getIncomingProductId() {
+		return incomingProductId;
 	}
 
-	public void setIncomingProduct(Product incomingProduct) {
-		this.incomingProduct = incomingProduct;
+	public void setIncomingProductId(Long incomingProductId) {
+		this.incomingProductId = incomingProductId;
 	}
 
 	public double getIncomingQuantity() {
@@ -111,12 +111,12 @@ public class Order {
 		this.incomingQuantity = incomingQuantity;
 	}
 
-	public User getBuyer() {
-		return buyer;
+	public Long getBuyerId() {
+		return buyerId;
 	}
 
-	public void setBuyer(User buyer) {
-		this.buyer = buyer;
+	public void setBuyerId(Long buyerId) {
+		this.buyerId = buyerId;
 	}
 
 	public Date getTransactionDate() {

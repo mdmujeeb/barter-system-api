@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.mujeeb.barter.entity.Order;
-import com.mujeeb.barter.entity.Product;
-import com.mujeeb.barter.entity.User;
+import com.mujeeb.barter.entity.Orders;
 
-public interface OrderRepository extends CrudRepository<Order, Integer> {
+public interface OrderRepository extends CrudRepository<Orders, Integer> {
 
-	Order findById(Long id);
+	Orders findById(Long id);
 	
-	List<Order> findByOutgoingProduct(Product outgoingProduct);
+	List<Orders> findAll();
 	
-	List<Order> findByIncomingProduct(Product incomingProduct);
+	List<Orders> findByOutgoingProductId(Long outgoingProductId);
+	
+	List<Orders> findByIncomingProductId(Long incomingProductId);
 
-	List<Order> findBySeller(User seller);
+	List<Orders> findBySellerId(Long sellerId);
 	
-	List<Order> findByBuyer(User buyer);
+	List<Orders> findByBuyerId(Long buyerId);
 	
-	List<Order> findByTransactionDate(Date transactionDate);
+	List<Orders> findByTransactionDate(Date transactionDate);
 }

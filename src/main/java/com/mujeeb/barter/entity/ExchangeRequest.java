@@ -16,25 +16,25 @@ public class ExchangeRequest {
     private Long id;
 
     @Column
-    private Listing outgoingListing;
+    private Long outgoingListingId;
     
     @Column
     private double outgoingQuantity;
 
     @Column
-    private Listing incomingListing;
+    private Long incomingListingId;
     
     @Column
     private double incomingQuantity;
     
     @Column
-    private User requestedBy;
+    private Long requestedByUserId;
 
     @Column
     private Date requestedAt;
 
     @Column
-    private User acceptedBy;
+    private Long acceptedByUserId;
     
     @Column
     private Date acceptedAt;
@@ -42,15 +42,15 @@ public class ExchangeRequest {
     public ExchangeRequest() {
     }
 
-    public ExchangeRequest(Listing outgoingListing, double outgoingQuantity, Listing incomingListing, double incomingQuantity
-    		, User requestedBy, Date requestedAt, User acceptedBy, Date acceptedAt) {
-        this.outgoingListing = outgoingListing;
+    public ExchangeRequest(Long outgoingListingId, double outgoingQuantity, Long incomingListingId, double incomingQuantity
+    		, Long requestedByUserId, Date requestedAt, Long acceptedByUserId, Date acceptedAt) {
+        this.outgoingListingId = outgoingListingId;
         this.outgoingQuantity = outgoingQuantity;
-        this.incomingListing = incomingListing;
+        this.incomingListingId = incomingListingId;
         this.incomingQuantity = incomingQuantity;
-        this.requestedBy = requestedBy;
+        this.requestedByUserId = requestedByUserId;
         this.requestedAt = requestedAt;
-        this.acceptedBy = acceptedBy;
+        this.acceptedByUserId = acceptedByUserId;
         this.acceptedAt = acceptedAt;
     }
 
@@ -58,13 +58,13 @@ public class ExchangeRequest {
     public String toString() {
         return "ExchangeRequest{" +
                 "id=" + id +
-                ", outgoingListing=" + outgoingListing +
+                ", outgoingListingId=" + outgoingListingId +
                 ", outgoingQuantity='" + outgoingQuantity + '\'' +
-                ", incomingListing='" + incomingListing + '\'' +
+                ", incomingListingId='" + incomingListingId + '\'' +
                 ", incomingQuantity=" + incomingQuantity +
-                ", requestedBy=" + requestedBy +
+                ", requestedByUserId=" + requestedByUserId +
                 ", requestedAt=" + requestedAt +
-                ", acceptedBy=" + acceptedBy +
+                ", acceptedByUserId=" + acceptedByUserId +
                 ", acceptedAt=" + acceptedAt +
                 '}';
     }
@@ -77,12 +77,12 @@ public class ExchangeRequest {
 		this.id = id;
 	}
 
-	public Listing getOutgoingListing() {
-		return outgoingListing;
+	public Long getOutgoingListingId() {
+		return outgoingListingId;
 	}
 
-	public void setOutgoingListing(Listing outgoingListing) {
-		this.outgoingListing = outgoingListing;
+	public void setOutgoingListingId(Long outgoingListingId) {
+		this.outgoingListingId = outgoingListingId;
 	}
 
 	public double getOutgoingQuantity() {
@@ -93,12 +93,12 @@ public class ExchangeRequest {
 		this.outgoingQuantity = outgoingQuantity;
 	}
 
-	public Listing getIncomingListing() {
-		return incomingListing;
+	public Long getIncomingListingId() {
+		return incomingListingId;
 	}
 
-	public void setIncomingListing(Listing incomingListing) {
-		this.incomingListing = incomingListing;
+	public void setIncomingListingId(Long incomingListingId) {
+		this.incomingListingId = incomingListingId;
 	}
 
 	public double getIncomingQuantity() {
@@ -109,12 +109,12 @@ public class ExchangeRequest {
 		this.incomingQuantity = incomingQuantity;
 	}
 
-	public User getRequestedBy() {
-		return requestedBy;
+	public Long getRequestedByUserId() {
+		return requestedByUserId;
 	}
 
-	public void setRequestedBy(User requestedBy) {
-		this.requestedBy = requestedBy;
+	public void setRequestedByUserId(Long requestedByUserId) {
+		this.requestedByUserId = requestedByUserId;
 	}
 
 	public Date getRequestedAt() {
@@ -125,12 +125,12 @@ public class ExchangeRequest {
 		this.requestedAt = requestedAt;
 	}
 
-	public User getAcceptedBy() {
-		return acceptedBy;
+	public Long getAcceptedByUserId() {
+		return acceptedByUserId;
 	}
 
-	public void setAcceptedBy(User acceptedBy) {
-		this.acceptedBy = acceptedBy;
+	public void setAcceptedByUserId(Long acceptedByUserId) {
+		this.acceptedByUserId = acceptedByUserId;
 	}
 
 	public Date getAcceptedAt() {

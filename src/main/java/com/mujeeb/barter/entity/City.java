@@ -12,6 +12,9 @@ public class City {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    
+    @Column
+    private Long stateId;
 
     @Column
     private String name;
@@ -72,5 +75,13 @@ public class City {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 }

@@ -3,9 +3,6 @@ package com.mujeeb.barter;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -21,11 +18,13 @@ import com.mujeeb.barter.entity.City;
 import com.mujeeb.barter.entity.Country;
 import com.mujeeb.barter.entity.State;
 import com.mujeeb.barter.entity.Unit;
+import com.mujeeb.barter.repository.CityRepository;
 import com.mujeeb.barter.repository.CountryRepository;
+import com.mujeeb.barter.repository.StateRepository;
 import com.mujeeb.barter.repository.UnitRepository;
 
 @SpringBootApplication
-public class MosqueDashboardApplication {
+public class BarterApplication {
 
 	public static String CSV_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSSS";
 	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat(CSV_DATE_FORMAT);
@@ -34,7 +33,7 @@ public class MosqueDashboardApplication {
 	private ResourceLoader resourceLoader;
 
 	public static void main(String[] args) {
-		SpringApplication.run(MosqueDashboardApplication.class, args);
+		SpringApplication.run(BarterApplication.class, args);
 	}
 
 	@Bean
@@ -65,20 +64,19 @@ public class MosqueDashboardApplication {
 	}
 
 	@Bean
-	public CommandLineRunner addressDataLoader(CountryRepository repository) {
+	public CommandLineRunner addressDataLoader(CountryRepository countryRepository, StateRepository stateRepository, CityRepository cityRepository) {
 
 		return (args) -> {
 
 			try {
 				
 				// If there is already existing data, do not insert master data
-				if(repository.findAll().iterator().hasNext()) {
+				if(countryRepository.findAll().iterator().hasNext()) {
 					return;
 				}
 				
 				InputStreamReader input = new InputStreamReader(resourceLoader.getResource("classpath:cities_master.csv").getInputStream());
 				CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(input);
-				Map<String,Country> countries = new HashMap<String,Country>();
 				
 				for (CSVRecord record : csvParser) {
 					String name = record.get("name");
@@ -87,28 +85,30 @@ public class MosqueDashboardApplication {
 					String latitude = record.get("latitude");
 					String longitude = record.get("longitude");
 					
-					Country beanCountry = countries.get(country);
+					Country beanCountry = countryRepository.findByName(country.toLowerCase());
 					if(beanCountry == null) {
-						beanCountry = new Country(country, new ArrayList<State>());
-						countries.put(country, beanCountry);
+						beanCountry = new Country(country.toLowerCase(), new ArrayList<Long>());
 					}
+					beanCountry = countryRepository.save(beanCountry);
 					
-					State beanState = beanCountry.findStateByName(state);
+					State beanState = stateRepository.findByName(state.toLowerCase());
 					if(beanState == null) {
-						beanState = new State(state, new ArrayList<>());
-					}
-					beanCountry.addState(beanState);
+						beanState = new State(state.toLowerCase(), new ArrayList<>());
+						beanState.setCountryId(beanCountry.getId());
+					}					
+					beanState = stateRepository.save(beanState);
+					beanCountry.addStateId(beanState.getId());
+					beanCountry = countryRepository.save(beanCountry);
 					
-					City beanCity = beanState.findCityByName(name);
+					City beanCity = cityRepository.findByName(name.toLowerCase());
 					if(beanCity == null) {
-						beanCity = new City(name, Double.parseDouble(latitude), Double.parseDouble(longitude));
+						beanCity = new City(name.toLowerCase(), Double.parseDouble(latitude), Double.parseDouble(longitude));
+						beanCity.setStateId(beanState.getId());
+						beanCity = cityRepository.save(beanCity);
 					}
-					beanState.addCity(beanCity);
-				}
-				
-				Iterator<Country> countrs = countries.values().iterator();
-				while(countrs.hasNext()) {
-					repository.save(countrs.next());
+					
+					beanState.getCityIds().add(beanCity.getId());
+					beanState = stateRepository.save(beanState);
 				}
 				
 			} catch(Exception ex) {

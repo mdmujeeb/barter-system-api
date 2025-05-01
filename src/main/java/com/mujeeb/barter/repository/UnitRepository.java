@@ -10,7 +10,7 @@ public interface UnitRepository extends CrudRepository<Unit, Integer> {
 
 	Unit findById(Long id);
 	
-	List<Unit> findAllUnits();
+	List<Unit> findAll();
 
     Unit findByName(String name);
 }

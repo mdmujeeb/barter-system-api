@@ -6,20 +6,20 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import com.mujeeb.barter.entity.ExchangeRequest;
-import com.mujeeb.barter.entity.Listing;
-import com.mujeeb.barter.entity.User;
 
 public interface ExchangeRequestRepository extends CrudRepository<ExchangeRequest, Integer> {
 
     ExchangeRequest findById(Long id);
+	
+	List<ExchangeRequest> findAll();
     
-    List<ExchangeRequest> findByOutgoingListing(Listing outgoingListing);
+    List<ExchangeRequest> findByOutgoingListingId(Long outgoingListingId);
     
-    List<ExchangeRequest> findByIncomingListing(Listing incomingListing);
+    List<ExchangeRequest> findByIncomingListingId(Long incomingListingId);
     
-    List<ExchangeRequest> findByRequestedBy(User requestedBy);
+    List<ExchangeRequest> findByRequestedByUserId(Long requestedByUserId);
     
-    List<ExchangeRequest> findByAcceptedBy(User acceptedBy);
+    List<ExchangeRequest> findByAcceptedByUserId(Long acceptedByUserId);
     
     List<ExchangeRequest> findByRequestedAt(Date requestedAt);
     

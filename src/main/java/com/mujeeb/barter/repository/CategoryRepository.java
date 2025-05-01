@@ -10,7 +10,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
 	Category findById(Long id);
 	
-	List<Category> findAllCategories();
-
+	List<Category> findAll();
+	
     Category findByName(String name);
 }

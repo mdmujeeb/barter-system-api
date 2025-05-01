@@ -6,7 +6,7 @@ import com.mujeeb.barter.entity.Product;
 public class ProductBeanMapper {
 
 	public static ProductResponseBean toResponseBean(Product bean) {
-		return new ProductResponseBean(bean.getId(), bean.getName(), bean.getDescription(), bean.getCategory().getId()
-				, bean.getSubcategory().getId(), bean.getImageUrl(), bean.getUnit().getId());
+		return new ProductResponseBean(bean.getId(), bean.getName(), bean.getDescription(), bean.getCategoryId()
+				, bean.getSubcategoryId(), bean.getImageUrl(), bean.getUnitId());
 	}
 }

@@ -9,6 +9,8 @@ import com.mujeeb.barter.entity.User;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findById(Long id);
+	
+	List<User> findAll();
     
     List<User> findByUserId(String userId);
     

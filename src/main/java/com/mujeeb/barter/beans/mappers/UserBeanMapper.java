@@ -8,8 +8,8 @@ public class UserBeanMapper {
 
 	public static UserResponseBean toResponseBean(User user) {
 		return new UserResponseBean(user.getId(), user.getUserId(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getMobile()
-				, user.getEmail(), DateUtil.formatDate(user.getDateOfBirth()), user.getAddress1(), user.getAddress2(), user.getCity().getId()
-				, user.getState().getId(), user.getCountry().getId(), user.getPinCode()
-				, user.getCity().getLatitude().toString(), user.getCity().getLongitude().toString());
+				, user.getEmail(), DateUtil.formatDate(user.getDateOfBirth()), user.getAddress1(), user.getAddress2(), user.getCityId()
+				, user.getStateId(), user.getCountryId(), user.getPinCode()
+				, "-1", "-1");
 	}
 }

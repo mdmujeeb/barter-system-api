@@ -1,4 +1,4 @@
-package com.mujeeb.mosquedashboard;
+package com.mujeeb.barter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

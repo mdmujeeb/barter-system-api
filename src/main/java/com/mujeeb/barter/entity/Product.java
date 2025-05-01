@@ -20,27 +20,30 @@ public class Product {
     private String description;
 
     @Column
-    private Category category;
+    private Long categoryId;
     
     @Column
-    private Subcategory subcategory;
+    private Long subcategoryId;
+    
+    @Column
+    private Long orderId;
     
     @Column
     private String imageUrl;
     
     @Column
-    private Unit unit;
+    private Long unitId;
 
     public Product() {
     }
 
-    public Product(String name, String description, Category category, Subcategory subcategory, String imageUrl, Unit unit) {
+    public Product(String name, String description, Long categoryId, Long subcategoryId, String imageUrl, Long unitId) {
         this.name = name;
         this.description = description;
-        this.category = category;
-        this.subcategory = subcategory;
+        this.categoryId = categoryId;
+        this.subcategoryId = subcategoryId;
         this.imageUrl = imageUrl;
-        this.unit = unit;
+        this.unitId = unitId;
     }
 
     @Override
@@ -49,10 +52,10 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", resultDescription='" + description + '\'' +
-                ", category=" + category +
-                ", subcategory=" + subcategory +
+                ", categoryId=" + categoryId +
+                ", subcategoryId=" + subcategoryId +
                 ", imageUrl=" + imageUrl +
-                ", unit=" + unit +
+                ", unitId=" + unitId +
                 '}';
     }
 
@@ -80,20 +83,28 @@ public class Product {
 		this.description = description;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public Subcategory getSubcategory() {
-		return subcategory;
+	public Long getSubcategoryId() {
+		return subcategoryId;
 	}
 
-	public void setSubcategory(Subcategory subcategory) {
-		this.subcategory = subcategory;
+	public void setSubcategoryId(Long subcategoryId) {
+		this.subcategoryId = subcategoryId;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
 	public String getImageUrl() {
@@ -104,11 +115,11 @@ public class Product {
 		this.imageUrl = imageUrl;
 	}
 
-	public Unit getUnit() {
-		return unit;
+	public Long getUnitId() {
+		return unitId;
 	}
 
-	public void setUnit(Unit unit) {
-		this.unit = unit;
+	public void setUnitId(Long unitId) {
+		this.unitId = unitId;
 	}
 }

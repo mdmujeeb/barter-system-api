@@ -2,13 +2,14 @@ package com.mujeeb.barter.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Country {
@@ -20,15 +21,16 @@ public class Country {
     @Column
     private String name;
 
-    @Column
-    private List<State> states;
+    @OneToMany(targetEntity = State.class)
+    @JoinColumn(name="id")
+    private List<Long> stateIds;
 
     protected Country() {
     }
 
-    public Country(String name, List<State> states) {
+    public Country(String name, List<Long> stateIds) {
         this.name = name;
-        this.states = states;
+        this.stateIds = stateIds;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class Country {
         return "NamazTime{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", states=" + states +
+                ", stateIds=" + stateIds +
                 '}';
     }
 
@@ -56,24 +58,19 @@ public class Country {
 		this.name = name;
 	}
 
-	public List<State> getStates() {
-		return states;
+	public List<Long> getStateIds() {
+		return stateIds;
 	}
 
-	public void setStates(List<State> states) {
-		this.states = states;
+	public void setStateIds(List<Long> stateIds) {
+		this.stateIds = stateIds;
 	}
 	
-	public State findStateByName(String state) {
-		
-		Optional<State> stt = states.stream().filter(st -> st.getName().equals(state)).findFirst();
-		return stt.isPresent() ? stt.get() : null;
-	}
-	
-	public void addState(State state) {
-		if(states == null) {
-			states = new ArrayList<State>();
+
+	public void addStateId(Long stateId) {
+		if(stateIds == null) {
+			stateIds = new ArrayList<Long>();
 		}
-		states.add(state);
+		stateIds.add(stateId);
 	}
 }

@@ -12,6 +12,9 @@ public class Unit {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    
+    @Column
+    private Long productId;
 
     @Column
     private String name;
@@ -58,5 +61,13 @@ public class Unit {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 }
